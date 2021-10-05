@@ -1,10 +1,25 @@
 # Kong Gateway with Keycloak OIDC
 
 ## Installation
+
+Create in the root directory of this project a file named `.env` containing the following:
+
+```
+DB_HOST="{AN IP address or domain}"
+DB_PORT=25060
+KEYCLOAK_DB_USER=keycloak
+KEYCLOAK_DB_PASSWORD=********
+KEYCLOAK_DATABASE=keycloak
+
+KEYCLOAK_USER=admin
+KEYCLOAK_PASSWORD="admin"
+```
+
+run the following
 ```
 docker-compose run --rm kong kong migrations bootstrap
 docker-compose run --rm kong kong migrations up
-docker-compose up -d
+docker-compose --env-file .env up -d
 ```
 
 ## Configuration

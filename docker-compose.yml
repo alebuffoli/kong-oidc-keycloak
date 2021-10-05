@@ -9,6 +9,35 @@ volumes:
   keycloak-datastore:
 
 services:
+
+
+  #######################################
+  # Keycloak
+  #######################################
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:15.0.2
+    #    depends_on:
+    #      - keycloak-db
+    networks:
+      - keycloak-net
+    ports:
+      - "8180:8080"
+    environment:
+      DB_VENDOR: postgres
+      DB_ADDR: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_DATABASE: ${KEYCLOAK_DATABASE}
+      DB_USER: ${KEYCLOAK_DB_USER}
+      DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+      KEYCLOAK_USER: ${KEYCLOAK_USER}
+      KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
+      PROXY_ADDRESS_FORWARDING: "true"
+
+  #######################################
+  # Kong
+  #######################################
+
   kong-db:
     image: postgres:9.6
     volumes:
@@ -20,16 +49,8 @@ services:
     environment:
       POSTGRES_DB: api-gw
       POSTGRES_USER: kong
-      POSTGRES_PASSWORD:
+      POSTGRES_PASSWORD: kong
       POSTGRES_HOST_AUTH_METHOD: trust
-
-  redis:
-    image: "redis:alpine"
-    hostname: redis
-    ports:
-      - "6379:6379"
-    networks:
-      - kong-net
 
   kong:
     build:
@@ -60,41 +81,6 @@ services:
       KONG_PLUGINS: bundled,oidc
       KONG_LOG_LEVEL: debug
       KONG_NGINX_HTTP_LUA_SHARED_DICT: introspection 10m
-
-  #######################################
-  # Keycloak
-  #######################################
-
-  keycloak-db:
-    image: postgres:9.6
-    volumes:
-      - keycloak-datastore:/var/lib/postgresql/data
-    networks:
-      - keycloak-net
-    ports:
-      - "25432:5432"
-    environment:
-      POSTGRES_DB: keycloak
-      POSTGRES_USER: keycloak
-      POSTGRES_PASSWORD: password
-
-  keycloak:
-    image: jboss/keycloak:4.5.0.Final
-    depends_on:
-      - keycloak-db
-    networks:
-      - keycloak-net
-    ports:
-      - "8180:8080"
-    environment:
-      DB_VENDOR: POSTGRES
-      DB_ADDR: keycloak-db
-      DB_PORT: 5432
-      DB_DATABASE: keycloak
-      DB_USER: keycloak
-      DB_PASSWORD: password
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: admin
 
   #######################################
   # Konga database prepare
