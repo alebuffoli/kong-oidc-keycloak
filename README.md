@@ -22,6 +22,12 @@ docker-compose run --rm kong kong migrations up
 docker-compose --env-file .env up -d
 ```
 
+### Issues
+If you see on the keycloak login page `https required` and yu need to login, launch in the db
+```
+update REALM set ssl_required='NONE' where id = 'master';
+```
+
 ## Configuration
 
 ### Keycloak Configuration
@@ -123,8 +129,6 @@ docker-compose up -d
 ```
 
 ## Acknowledgment
-This project is inspired
-[repository](https://github.com/blitzrok/kong-oidc-keycloak)
 This project is inspired by the articles Securing APIs with Kong and Keycloak. Find available the 
 [part 1](https://www.jerney.io/secure-apis-kong-keycloak-1/) and 
 [part 2](https://www.jerney.io/secure-apis-kong-keycloak-2/).

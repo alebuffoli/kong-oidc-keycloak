@@ -17,8 +17,6 @@ services:
 
   keycloak:
     image: quay.io/keycloak/keycloak:15.0.2
-    #    depends_on:
-    #      - keycloak-db
     networks:
       - keycloak-net
     ports:
@@ -33,6 +31,8 @@ services:
       KEYCLOAK_USER: ${KEYCLOAK_USER}
       KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
       PROXY_ADDRESS_FORWARDING: "true"
+      DEBUG: "true"
+    restart: on-failure
 
   #######################################
   # Kong
