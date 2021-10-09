@@ -32,7 +32,9 @@ services:
       KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
       PROXY_ADDRESS_FORWARDING: "true"
       DEBUG: "true"
-    restart: on-failure
+    restart: always
+    env_file:
+      - .env
 
   #######################################
   # Kong

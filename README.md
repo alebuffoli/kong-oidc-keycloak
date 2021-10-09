@@ -18,8 +18,9 @@ KEYCLOAK_PASSWORD="admin"
 run the following
 ```
 docker-compose run --rm kong kong migrations bootstrap
+docker-compose run --rm kong kong migrations bootstrap  // It's not an error, send this command two times
 docker-compose run --rm kong kong migrations up
-docker-compose --env-file .env up -d
+docker-compose up -d
 ```
 
 ### Issues
