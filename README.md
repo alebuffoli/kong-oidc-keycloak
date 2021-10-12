@@ -13,6 +13,8 @@ KEYCLOAK_DATABASE=keycloak
 
 KEYCLOAK_USER=admin
 KEYCLOAK_PASSWORD="admin"
+
+GLOBAL_NET=gloabal-net
 ```
 
 run the following

@@ -1,8 +1,10 @@
 version: '3.4'
 
 networks:
-  kong-net:
-  keycloak-net:
+  default:
+    external:
+      name: ${GLOBAL_NET}
+
 
 volumes:
   kong-datastore:
@@ -18,7 +20,7 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:15.0.2
     networks:
-      - keycloak-net
+      - ${GLOBAL_NET}
     ports:
       - "8180:8080"
     environment:
@@ -45,7 +47,7 @@ services:
     volumes:
       - kong-datastore:/var/lib/postgresql/data
     networks:
-      - kong-net
+      - ${GLOBAL_NET}
     ports:
       - "15432:5432"
     environment:
@@ -63,7 +65,7 @@ services:
     depends_on:
       - kong-db
     networks:
-      - kong-net
+      - ${GLOBAL_NET}
     ports:
       - "8000:8000" # Listener
       - "8001:8001" # Admin API
@@ -91,7 +93,7 @@ services:
     image: pantsel/konga:latest
     command: "-c prepare -a postgres -u postgresql://kong:${KONG_PG_PASSWORD:-kong}@kong-db:5432/konga"
     networks:
-      - kong-net
+      - ${GLOBAL_NET}
     restart: on-failure
     depends_on:
       - kong-db
@@ -103,7 +105,7 @@ services:
     image: pantsel/konga:latest
     restart: always
     networks:
-      - kong-net
+      - ${GLOBAL_NET}
     environment:
       DB_ADAPTER: postgres
       DB_URI: postgresql://kong:${KONG_PG_PASSWORD:-kong}@kong-db:5432/konga
