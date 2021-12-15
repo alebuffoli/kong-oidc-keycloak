@@ -13,6 +13,7 @@ KEYCLOAK_DATABASE=keycloak
 
 KEYCLOAK_USER=admin
 KEYCLOAK_PASSWORD="admin"
+KEYCLOAK_FRONTEND_URL="https://yourdomain.com/auth"
 
 GLOBAL_NET=gloabal-net
 ```

@@ -30,6 +30,7 @@ services:
       KEYCLOAK_USER: ${KEYCLOAK_USER}
       KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
       PROXY_ADDRESS_FORWARDING: "true"
+      KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
       DEBUG: "true"
     restart: always
     env_file:
